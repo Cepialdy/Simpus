@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('patient_id')->constrained()->onDelete('cascade');
             $table->foreignId('doctor_id')->nullable()->constrained('doctors')->onDelete('set null');
-            $table->string('room_number');
+            $table->string('room_number')->nullable();
             $table->dateTime('admitted_at');
             $table->dateTime('discharged_at')->nullable();
             $table->timestamps();

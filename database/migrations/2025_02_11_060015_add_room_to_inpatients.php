@@ -11,9 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('queues', function (Blueprint $table) {
-            $table->string('status')->default('pending');
-            $table->foreignId('clinic_id')->nullable()->constrained()->nullOnDelete();
+        Schema::table('inpatients', function (Blueprint $table) {
             $table->foreignId('room_id')->nullable()->constrained()->nullOnDelete();
         });
     }
@@ -23,8 +21,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('queues', function (Blueprint $table) {
-            $table->dropColumn(['status', 'clinic_id']);
+        Schema::table('inpatient', function (Blueprint $table) {
+            $table->dropForeign(['room_id']);
+            $table->dropColumn('room_id');
         });
     }
 };

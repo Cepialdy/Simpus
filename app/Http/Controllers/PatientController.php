@@ -140,15 +140,11 @@ class PatientController extends Controller
         $inpatient = $patient->inpatients()->first();
 
         // Cek apakah ada antrean klinik terbaru untuk pasien ini
-        $latestQueue = $patient->latestClinic()->first();
+        $latestClinic = $patient->latestClinic()->first();
+        $latestQueue = $patient->queues?->sortByDesc('created_at')->first();
 
         // Tentukan doctor_id berdasarkan prioritas latestQueue atau inpatient (jika salah satu null)
-        $doctorId = null;
-        if ($latestQueue) {
-            $doctorId = $latestQueue->doctor_id;
-        } elseif ($inpatient) {
-            $doctorId = $inpatient->doctor_id;
-        }
+        $doctorId = $latestQueue->doctor_id ?? $inpatient->doctor_id ?? $latestClinic->doctor_id;
 
         // Jika doctorId masih null, mungkin perlu diberi nilai default atau ditangani sesuai logika bisnis Anda
         if (!$doctorId) {
@@ -164,7 +160,7 @@ class PatientController extends Controller
         ]);
 
         // Tentukan clinic_id, gunakan dari latestQueue jika ada, atau beri nilai default 1
-        $clinicId = $latestQueue->clinic_id ?? 1;
+        $clinicId = $latestQueue->clinic_id ?? $latestClinic?->clinic_id;
 
         // Buat objek MedicalExamination
         $medicalExamination = new MedicalExamination([

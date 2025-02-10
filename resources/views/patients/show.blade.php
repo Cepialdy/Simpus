@@ -23,8 +23,8 @@
                            <p>Alamat: {{ $patient->address }}</p>
                            <p>Tanggal Lahir: {{ $patient->birth_date }}</p>
                            <p>Nomor Telepon: {{ $patient->phone }}</p>
-                           <a href="{{ route('patients.index') }}" class="btn btn-secondary mt-4 mb-4">Kembali Ke menu Pasien</a>
-                           <a href="{{ route('patients.edit', $patient->id) }}" class="btn btn-primary mt-4 mb-4">Edit Pasien</a>
+                           <a href="{{ route('patients.index') }}" class="mt-4 mb-4 btn btn-secondary">Kembali Ke menu Pasien</a>
+                           <a href="{{ route('patients.edit', $patient->id) }}" class="mt-4 mb-4 btn btn-primary">Edit Pasien</a>
                        </div>
                    </div>
                </div>
@@ -138,13 +138,13 @@
                                                     <td>{{ $medicalExamination->doctor->full_name }}</td>
                                                     <td>{{ $medicalExamination->diagnosis }}</td>
                                                     <td>{{ date('d-M-Y', strtotime($medicalExamination->examination_datetime)) }}</td>
-                                                    <td>{{ $medicalExamination->clinic->name }}</td>
+                                                    <td>{{ $medicalExamination?->clinic?->name }}</td>
                                                     <td>{{ $medicalExamination->prescription ?: '-' }}</td>
                                                     @php
-                                                        $clinicPrice = $medicalExamination->clinic->tarif;
-                                                        $doctorPrice = $medicalExamination->doctor->tarif;
-                                                        $medicinePrice = $medicalExamination->medicines->sum('price');
-                                                        $medicineList = $medicalExamination->medicines->pluck('name')->implode(', ');
+                                                        $clinicPrice = $medicalExamination->clinic?->tarif;
+                                                        $doctorPrice = $medicalExamination->doctor?->tarif;
+                                                        $medicinePrice = $medicalExamination->medicines?->sum('price');
+                                                        $medicineList = $medicalExamination->medicines?->pluck('name')->implode(', ');
                                                         $total = $clinicPrice + $doctorPrice + $medicinePrice;
                                                         // format tarif indonesia
                                                         $total = number_format($total, 0, ',', '.');                                              

@@ -76,4 +76,8 @@ class Patient extends Model
         return $this->latestClinic()->first()->doctor->name;
     }
 
+    public function latestQueue()
+    {
+        return $this->queues?->sortByDesc('created_at')->first();
+    }
 }
