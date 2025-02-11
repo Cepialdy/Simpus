@@ -75,6 +75,12 @@
                                 </button>
                             </div>
                         </div>
+
+                        <div class="col-xxl-12 col-lg-12 col-md-12 mt-5">
+                            <div class="text-center mb-30">
+                                <a href="{{ route('login') }}">{{ __('Login') }}</a>
+                            </div>
+                        </div>
                     </div>
                     <!-- end row -->
                 </form>

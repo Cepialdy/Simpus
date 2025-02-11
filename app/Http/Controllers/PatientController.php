@@ -19,7 +19,12 @@ class PatientController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Patient::query();
+        $user = auth()->user();
+        $query = Patient::query()
+            ->when(
+                in_array($user->role, ['Pasien']),
+                fn ($q2) => $q2->where('email', $user->email)
+            );
 
         if ($request->filled('search')) {
             $search = $request->input('search');
@@ -104,6 +109,7 @@ class PatientController extends Controller
             'address' => 'required|string',
             'birth_date' => 'required|date',
             'phone' => 'required|string|max:20',
+            'email' => 'nullable|email|max:255',
         ]);
 
         $patient->update($request->all());

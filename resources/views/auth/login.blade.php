@@ -73,6 +73,12 @@
                                     </button>
                                 </div>
                             </div>
+
+                            <div class="col-xxl-12 col-lg-12 col-md-12 mt-5">
+                                <div class="text-center mb-30">
+                                    <a href="{{ route('register') }}">{{ __('Create account?') }}</a>
+                                </div>
+                            </div>
                         </div>
                         <!-- end row -->
                     </form>

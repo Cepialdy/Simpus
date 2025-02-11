@@ -106,3 +106,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/update-queue', [App\Http\Controllers\HomeController::class, 'updateQueue'])->name('home.updateQueue');
 
 });
+
+Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register']);

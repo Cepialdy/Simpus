@@ -47,6 +47,10 @@
                 ['route' => 'clinics.index', 'text' => 'Klinik', 'icon' => 'hospital'],
                 ['route' => 'doctors.index', 'text' => 'Dokter', 'icon' => 'user-md'],
             ],
+            'Pasien' => [
+                ['route' => 'queue.index', 'text' => 'Antrian', 'icon' => 'ticket-alt'],
+                ['route' => 'patients.index', 'text' => 'Pasien', 'icon' => 'user'],
+            ],
         ];
         $navigation = $navigationConfig[$userRole] ?? [];
     @endphp

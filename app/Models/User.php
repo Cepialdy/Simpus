@@ -48,4 +48,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Clinic::class);
     }
+
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class, 'email', 'email');
+    }
 }

@@ -29,6 +29,21 @@
                     </div>
                 </div> --}}
 
+                <form action="{{ route('users.index') }}" method="GET" class="mb-4 mt-4">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <input type="text" name="search" class="form-control" placeholder="Search by name or NO RM" value="{{ request('search') }}">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" name="email" class="form-control" placeholder="Search by email" value="{{ request('email') }}">
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
+                            <a href="{{ route('users.index') }}" class="btn btn-secondary">{{ __('Reset') }}</a>
+                        </div>
+                    </div>
+                </form>
+                
                 <div class="table-wrapper table-responsive">
                     <table class="table striped-table">
                         <thead>

@@ -17,12 +17,34 @@ class QueueController extends Controller
 {
     public function index(Request $request)
     {
-        $queueUmum = Queue::where('clinic_id', 1)->get();
+        $user = auth()->user();
+        $userPatient = Patient::query()
+            ->when(
+                in_array($user->role, ['Pasien']),
+                fn ($q2) => $q2->where('email', $user->email)
+            )
+            ->first();
+
+        $queueUmum = Queue::query()
+            ->when(
+                in_array($user->role, ['Pasien']),
+                fn ($q2) => $q2->where('patient_id', $userPatient?->id)
+            )
+            ->where('clinic_id', 1)->get();
         
         // Ambil antrian dengan clinic_id 2
-        $queueDalam = Queue::where('clinic_id', 2)->get();
+        $queueDalam = Queue::query()
+            ->when(
+                in_array($user->role, ['Pasien']),
+                fn ($q2) => $q2->where('patient_id', $userPatient?->id)
+            )
+            ->where('clinic_id', 2)->get();
 
-        $queues = Queue::query();
+        $queues = Queue::query()
+            ->when(
+                in_array($user->role, ['Pasien']),
+                fn ($q2) => $q2->where('patient_id', $userPatient?->id)
+            );
 
         if ($request->has('clinic_id')) {
             $queues->where('clinic_id', $request->clinic_id);
@@ -31,10 +53,25 @@ class QueueController extends Controller
         // Ambil semua antrian yang sudah difilter
         $queues = $queues->get();
 
-        $queuesRawatJalan = Queue::where('status', 'rawat jalan')->get();
-        $queuesRawatInap = Queue::where('status', 'rawat inap')->get();
+        $queuesRawatJalan = Queue::query()
+            ->when(
+                in_array($user->role, ['Pasien']),
+                fn ($q2) => $q2->where('patient_id', $userPatient?->id)
+            )
+            ->where('status', 'rawat jalan')->get();
+        $queuesRawatInap = Queue::query()
+            ->when(
+                in_array($user->role, ['Pasien']),
+                fn ($q2) => $q2->where('patient_id', $userPatient?->id)
+            )
+            ->where('status', 'rawat inap')->get();
 
-        $patients = Patient::all();
+        $patients = Patient::query()
+            ->when(
+                in_array($user->role, ['Pasien']),
+                fn ($q2) => $q2->where('id', $userPatient?->id)
+            )
+            ->get();
         $clinics = Clinic::all();
         $doctors = Doctor::all();
         $rooms = Room::all();

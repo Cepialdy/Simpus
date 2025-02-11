@@ -89,6 +89,14 @@
     </header>
     <!-- ========== header end ========== -->
 
+    @if (in_array(auth()->user()?->role, ['Pasien']) && empty(auth()->user()?->patient))
+        <div class="p-4">
+            <div class="alert-warning p-4" role="alert">
+                Please contact admin for patient
+            </div>
+        </div>
+    @endif
+
     <!-- ========== section start ========== -->
     <section class="section">
         <div class="container-fluid">

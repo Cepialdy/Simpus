@@ -29,9 +29,12 @@
                     @endif
                </div>
 
+               @if (!in_array(auth()->user()->role, ['Pasien']))
                 <div class="alert-box primary-alert">
                     <a href="{{ route('patients.create') }}" class="btn btn-primary">+ Pasien</a>
                 </div>
+               @endif
+
                 <form action="{{ route('patients.index') }}" method="GET" class="mb-4">
                     <div class="row">
                         <div class="col-md-2">
