@@ -1,39 +1,36 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="title-wrapper pt-30">
-        <div class="row align-items-center">
-            <div class="col-md-6">
-                <div class="title mb-30">
-                    <h2>{{ __('Tambah Klinik') }}</h2>
+<div class="container py-5">
+    <div class="card shadow-sm border-0 rounded-4 p-4 bg-light">
+        <div class="card-body">
+            <h2 class="fw-bold text-center text-primary mb-4">
+                <i class="fas fa-hospital me-2"></i> Tambah Klinik
+            </h2>
+
+            <form action="{{ route('clinics.store') }}" method="POST" class="p-3">
+                @csrf
+                <div class="mb-4">
+                    <label for="name" class="form-label fw-semibold text-secondary">Nama Klinik</label>
+                    <input type="text" class="form-control shadow-sm rounded-3" id="name" name="name" value="{{ old('name') }}" placeholder="Masukkan Nama Klinik">
+                    @error('name')
+                        <div class="text-danger small mt-1">{{ $message }}</div>
+                    @enderror
                 </div>
-            </div>
+
+                <div class="mb-4">
+                    <label for="tarif" class="form-label fw-semibold text-secondary">Tarif</label>
+                    <input type="text" class="form-control shadow-sm rounded-3" id="tarif" name="tarif" value="{{ old('tarif') }}" placeholder="Masukkan Tarif">
+                    @error('tarif')
+                        <div class="text-danger small mt-1">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 fw-semibold shadow-sm">
+                    <i class="fas fa-save me-2"></i> Simpan
+                </button>
+            </form>
         </div>
     </div>
-    
-    <div class="card-styles">
-        <div class="card-style-3 mb-30">
-            <div class="card-content">
-                <form action="{{ route('clinics.store') }}" method="POST">
-                    @csrf
-                    <div class="mb-3">
-                        <label for="name" class="form-label">{{ __('Nama Klinik') }}</label>
-                        <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}">
-                        @error('name')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="mb-3">
-                        <label for="tarif" class="form-label">{{ __('tarif') }}</label>
-                        <input type="text" class="form-control" id="tarif" name="tarif" value="{{ old('tarif') }}">
-                        @error('tarif')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary">{{ __('Simpan') }}</button>
-                </form>
-            </div>
-        </div>
-    </div>
+</div>
 @endsection

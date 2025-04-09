@@ -1,191 +1,143 @@
 @extends('layouts.app')
 
 @section('content')
-    <!-- ========== title-wrapper start ========== -->
     <div class="title-wrapper pt-30">
         <div class="row align-items-center">
             <div class="col-md-6">
                 <div class="title mb-30">
-                    <h2>{{ __('Users') }}</h2>
+                    <h2 class="text-primary">{{ __('Users') }}</h2>
                 </div>
             </div>
-            <!-- end col -->
         </div>
-        <!-- end row -->
     </div>
-    <!-- ========== title-wrapper end ========== -->
 
-    <div class="card-styles">
-        <div class="card-style-3 mb-30">
-            <div class="card-content">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createQueueModal">
-                    Tambah User
-                </button>
-                {{-- <div class="alert-box primary-alert">
-                    <div class="alert">
-                        <p class="text-medium">
-                            Users
-                        </p>
-                    </div>
-                </div> --}}
+    <div class="card shadow-sm border-0 rounded-4 p-4 bg-light">
+        <div class="card-body">
+            <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#createQueueModal">
+                <i class="fas fa-user-plus"></i> Tambah User
+            </button>
 
-                <form action="{{ route('users.index') }}" method="GET" class="mb-4 mt-4">
-                    <div class="row">
-                        <div class="col-md-2">
-                            <input type="text" name="search" class="form-control" placeholder="Search by name or NO RM" value="{{ request('search') }}">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="text" name="email" class="form-control" placeholder="Search by email" value="{{ request('email') }}">
-                        </div>
-                        <div class="col-md-2">
-                            <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
-                            <a href="{{ route('users.index') }}" class="btn btn-secondary">{{ __('Reset') }}</a>
-                        </div>
+            <form action="{{ route('users.index') }}" method="GET" class="mb-4">
+                <div class="row g-2">
+                    <div class="col-md-3">
+                        <input type="text" name="search" class="form-control" placeholder="Cari nama atau NO RM" value="{{ request('search') }}">
                     </div>
-                </form>
-                
-                <div class="table-wrapper table-responsive">
-                    <table class="table striped-table">
-                        <thead>
+                    <div class="col-md-3">
+                        <input type="text" name="email" class="form-control" placeholder="Cari email" value="{{ request('email') }}">
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-info">Cari</button>
+                        <a href="{{ route('users.index') }}" class="btn btn-secondary">Reset</a>
+                    </div>
+                </div>
+            </form>
+            
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead class="table-dark">
                         <tr>
-                            <th><h6>Name</h6></th>
-                            <th><h6>Role</h6></th>
-                            <th><h6>Email</h6></th>
-                            <th><h6>Action</h6></th>
+                            <th>Nama</th>
+                            <th>Role</th>
+                            <th>Email</th>
+                            <th>Aksi</th>
                         </tr>
-                        <!-- end table row-->
-                        </thead>
-                        <tbody>
+                    </thead>
+                    <tbody>
                         @foreach($users as $data)
                             <tr>
+                                <td>{{ $data->name }}</td>
+                                <td>{{ $data->role }}</td>
+                                <td>{{ $data->email }}</td>
                                 <td>
-                                    <p>{{ $data->name }}</p>
-                                </td>
-                                <td>
-                                    <p>{{ $data->role }}</p>
-                                </td>
-                                <td>
-                                    <p>{{ $data->email }}</p>
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editQueueModal-{{ $data->id }}">Edit</button>
+                                    <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editQueueModal-{{ $data->id }}">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </button>
                                 </td>
                             </tr>
-                            <div class="modal fade" id="editQueueModal-{{ $data->id }}" tabindex="-1" aria-labelledby="editQueueModalLabel-{{ $data->id }}" aria-hidden="true">
+                            <div class="modal fade" id="editQueueModal-{{ $data->id }}" tabindex="-1">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="editQueueModalLabel-{{ $data->id }}">Edit Data User</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <div class="modal-header bg-warning text-white">
+                                            <h5 class="modal-title">Edit Data User</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                         </div>
                                         <div class="modal-body">
                                             <form action="{{ route('users.update', $data->id) }}" method="POST">
                                                 @csrf
                                                 @method('PUT')
                                                 <div class="mb-3">
-                                                    <label for="name" class="form-label">Nama User</label>
-                                                    <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $data->name) }}">
-                                                    @error('name')
-                                                        <div class="text-danger">{{ $message }}</div>
-                                                    @enderror
+                                                    <label class="form-label">Nama User</label>
+                                                    <input type="text" class="form-control" name="name" value="{{ old('name', $data->name) }}">
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="role" class="form-label">Role</label>
-                                                    <select name="role" id="role" class="form-select">
+                                                    <label class="form-label">Role</label>
+                                                    <select name="role" class="form-select">
                                                         <option value="Admin">Admin</option>
                                                         <option value="Doctor">Doctor</option>
                                                         <option value="Petugas Administrasi">Petugas Administrasi</option>
                                                         <option value="Petugas Spesialis">Petugas Spesialis</option>
-                                                        <option value="Petugas Poliklinik Umum">Petugas Poliklinik Umum</option>
                                                         <option value="Farmasi">Farmasi</option>
                                                         <option value="Perawat">Perawat</option>
                                                         <option value="Manajemen">Manajemen</option>
                                                     </select>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="email" class="form-label">Email</label>
-                                                    <input type="text" class="form-control" id="email" name="email" value="{{ old('email', $data->email) }}">
-                                                    @error('email')
-                                                        <div class="text-danger">{{ $message }}</div>
-                                                    @enderror
+                                                    <label class="form-label">Email</label>
+                                                    <input type="text" class="form-control" name="email" value="{{ old('email', $data->email) }}">
                                                 </div>
-                                                
-                                                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                                <button type="submit" class="btn btn-primary w-100">Simpan Perubahan</button>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         @endforeach
-                        <!-- end table row -->
-                        </tbody>
-                    </table>
-                    <!-- end table -->
-
-                    {{ $users->links() }}
-                </div>
-
+                    </tbody>
+                </table>
+                {{ $users->links() }}
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="createQueueModal" tabindex="-1" aria-labelledby="createQueueModalLabel" aria-hidden="true">
+    <div class="modal fade" id="createQueueModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="createQueueModalLabel">Buat data User</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">Buat Data User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form action="{{ route('users.store') }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <label for="name" class="form-label">Nama User</label>
-                            <input type="text" class="form-control" @error('name')  @enderror name="name" id="name" placeholder="{{ __('Name') }}" value="{{ old('name') }}" required autocomplete="name" autofocus>
-                                @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                            <label class="form-label">Nama User</label>
+                            <input type="text" class="form-control" name="name" placeholder="Nama" value="{{ old('name') }}" required>
                         </div>
                         <div class="mb-3">
-                            <label for="role" class="form-label">Role</label>
-                            <select name="role" id="role" class="form-select">
+                            <label class="form-label">Role</label>
+                            <select name="role" class="form-select">
                                 <option value="Admin">Admin</option>
                                 <option value="Doctor">Doctor</option>
                                 <option value="Petugas Administrasi">Petugas Administrasi</option>
                                 <option value="Petugas Spesialis">Petugas Spesialis</option>
-                                <option value="Petugas Poliklinik Umum">Petugas Poliklinik Umum</option>
                                 <option value="Farmasi">Farmasi</option>
                                 <option value="Perawat">Perawat</option>
                                 <option value="Manajemen">Manajemen</option>
-
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input @error('email') @enderror class="form-control" type="email" name="email" id="email" placeholder="{{ __('Email') }}" value="{{ old('email') }}" required autocomplete="email">
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" placeholder="Email" value="{{ old('email') }}" required>
                         </div>
                         <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" @error('password')  @enderror class="form-control" name="password" id="password" placeholder="{{ __('Password') }}" required autocomplete="new-password">
-                            @error('password')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" name="password" required>
                         </div>
                         <div class="mb-3">
-                            <label for="password_confirmation" class="form-label">Confirm Password</label>
-                            <input type="password" @error('password')  @enderror class="form-control" name="password_confirmation" id="password_confirmation" placeholder="{{ __('Confirm Password') }}" required autocomplete="new-password">
+                            <label class="form-label">Konfirmasi Password</label>
+                            <input type="password" class="form-control" name="password_confirmation" required>
                         </div>
-
-                        <button type="submit" class="btn btn-primary">Tambah data</button>
+                        <button type="submit" class="btn btn-success w-100">Tambah User</button>
                     </form>
                 </div>
             </div>

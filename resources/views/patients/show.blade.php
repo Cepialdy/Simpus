@@ -96,7 +96,7 @@
                                     @endforeach
                                 </select>
                                 @error('medicines')
-                                    <div class="text-danger">{{ $message }}</div>
+                                <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div id="medicine-dosages" class="mb-3"></div>
